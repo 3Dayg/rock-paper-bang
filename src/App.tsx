@@ -1,5 +1,9 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHandSpock, faHandLizard, faHandFist, faHandScissors, faHandPaper } from '@fortawesome/free-solid-svg-icons'
+
 import React, { useState } from "react";
-import { JsxFlags } from "typescript";
+import Choice from "./components/choice";
+import { CHOICES } from "./data/choices";
 
 enum Actions {
  ROCK,
@@ -15,8 +19,8 @@ const App = () => {
   const [computerChoice, setComputerChoice] = useState<string>('NA');
   const [result, setResult] = useState<string>('NA');
 
-  const handleChoice = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const tmpChoice = e.currentTarget.id;
+  const handleChoice = (id: string) => () => {
+    const tmpChoice = id;
     const tmpComputerChoice = Actions[Math.floor(Math.random() * 5)];
 
     setYourChoice(tmpChoice);
@@ -82,7 +86,7 @@ const App = () => {
     }
 
     //LIZARD
-    if(tmpChoice === Actions[2]){
+    if(tmpChoice === Actions[3]){
       switch(tmpComputerChoice){
         case 'ROCK':
           setResult('You Lost');
@@ -100,7 +104,7 @@ const App = () => {
     }
 
     //SPOCK
-    if(tmpChoice === Actions[2]){
+    if(tmpChoice === Actions[4]){
       switch(tmpComputerChoice){
         case 'ROCK':
           setResult('You Won');
@@ -136,9 +140,13 @@ const App = () => {
           {result}
         </span>
       </h3>
-      <button id='ROCK' onClick={handleChoice}>Rock</button>
-      <button id='PAPER' onClick={handleChoice}>Paper</button>
-      <button id='SCISSORS' onClick={handleChoice}>Scissors</button>
+      {
+        CHOICES.map(choice => {
+          return <Choice id={choice.name} clickHandler={handleChoice}>
+            <FontAwesomeIcon icon={choice.icon}/>
+          </Choice>
+        })
+      }
     </div>
   );
 }
